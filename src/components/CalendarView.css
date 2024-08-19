@@ -1,0 +1,160 @@
+#calendar-view {
+  position: relative;
+
+  .rbc-view--change {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 0.5rem;
+  }
+
+  .rbc-now,
+  .rbc-today {
+    background-color: transparent;
+  }
+
+  .rbc-current-time-indicator {
+    background-color: var(--md-sys-color-on-error-container);
+    height: 3px;
+  }
+
+  .rbc-header {
+    padding: 8px 0 25px 8px !important;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    border-left: none;
+    letter-spacing: 1.2px;
+  }
+
+  .rbc-time-view {
+    .rbc-header span {
+      display: flex;
+      flex-direction: column-reverse;
+      justify-content: flex-start;
+    }
+    .rbc-header .child:last-child {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--md-sys-color-inverse-primary);
+    }
+
+    .rbc-header .child:first-child {
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+  }
+
+  .rbc-time-view .rbc-allday-cell {
+    height: auto;
+  }
+
+  .rbc-toolbar-label {
+    font-size: 1.5rem;
+    color: var(--md-sys-color-primary);
+    font-weight: 600;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+  }
+
+  /* Responsive Styles */
+  @media screen and (max-width: 768px) {
+    .rbc-view--change {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      min-width: 100%;
+      margin: -1rem;
+      background-color: var(--md-sys-color-secondary);
+      color: var(--md-sys-color-on-secondary);
+    }
+
+    .rbc-toolbar {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      grid-template-areas:
+        "left-group right-group"
+        "label label";
+      align-items: center;
+      gap: 1rem 0;
+      width: 100%;
+      padding: 1rem;
+    }
+
+    /* Assign grid areas */
+    .rbc-btn-group:first-of-type {
+      grid-area: left-group;
+    }
+
+    .rbc-btn-group:last-of-type {
+      grid-area: right-group;
+    }
+
+    .rbc-toolbar-label {
+      grid-area: label;
+      text-align: center;
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    .rbc-header {
+      padding: 4px 0 15px 4px !important;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .rbc-time-view .rbc-header .child:first-child {
+      font-size: 0.8rem;
+    }
+
+    .rbc-time-view .rbc-header .child:last-child {
+      font-size: 0.4rem;
+    }
+
+    .rbc-month-header span {
+      font-size: 0.4rem !important;
+    }
+  }
+
+  .rbc-month-view {
+    min-height: 500px;
+  }
+
+  @media screen and (max-width: 480px) {
+    .rbc-toolbar {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto;
+      grid-template-areas:
+        "label"
+        "left-group"
+        "right-group";
+      gap: 0.5rem 0;
+    }
+
+    .rbc-toolbar-label {
+      font-size: 1.2rem;
+    }
+
+    .rbc-btn-group {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .rbc-header {
+      padding: 4px 0 20px 2px !important;
+      letter-spacing: 1px;
+    }
+
+    .rbc-header .child:last-child {
+      font-size: 0.4rem;
+    }
+
+    .rbc-header .child:first-child {
+      font-size: 0.8rem;
+    }
+  }
+}

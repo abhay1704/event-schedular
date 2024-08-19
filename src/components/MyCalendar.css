@@ -1,0 +1,111 @@
+/* Target the entire calendar */
+
+.calendar {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 800px;
+  aspect-ratio: 1.3; /* Keeps the calendar square */
+  margin-top: 10%;
+  position: relative;
+  padding-top: 130%; /* Maintain aspect ratio */
+
+  * {
+    border: none !important;
+  }
+
+  .rbc-calendar {
+    position: absolute;
+    top: 0;
+    border: none;
+    width: 100%;
+    height: 100%; /* Ensure it takes full height */
+  }
+
+  .rbc-month-view .rbc-day-bg {
+    border: none !important;
+  }
+
+  /* Remove borders from the time slot rows */
+  .rbc-time-slot {
+    border: none !important;
+  }
+
+  /* Target the entire view */
+  .calendar-view {
+    display: flex;
+    justify-content: center;
+    margin-top: 10%;
+    height: 0;
+    padding-top: 130%;
+    position: relative;
+  }
+
+  /* Toolbar styles */
+  .rbc-toolbar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 0.5rem;
+  }
+
+  /* Toolbar label styles */
+  .rbc-toolbar-label {
+    font-size: 1.5rem;
+    color: var(--md-sys-color-primary);
+    text-align: left;
+  }
+
+  .rbc-header {
+    padding: 10px 0;
+    border: none;
+  }
+
+  .rbc-month-view {
+    border: none;
+  }
+  .rbc-current {
+    background-color: var(--md-sys-color-primary-fixed) !important;
+    color: var(--md-sys-color-on-primary-fixed) !important;
+  }
+
+  .rbc-today {
+    background-color: transparent;
+  }
+
+  .rbc-now {
+    background-color: var(--md-sys-color-error) !important;
+    color: var(--md-sys-color-on-error) !important;
+  }
+
+  /* Remove borders from time slot rows */
+  .rbc-time-slot {
+    border: none !important;
+  }
+
+  /* Remove borders from day backgrounds */
+  .rbc-month-view .rbc-day-bg {
+    border: none !important;
+  }
+
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .calendar {
+      margin-top: 20%;
+    }
+
+    .calendar-view {
+      margin-top: 20%;
+    }
+
+    .rbc-toolbar-label {
+      font-size: 1.2rem;
+    }
+
+    .rbc-toolbar {
+      flex-direction: row-reverse;
+    }
+  }
+}

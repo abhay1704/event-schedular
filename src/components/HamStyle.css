@@ -1,0 +1,58 @@
+#open-task-outline-btn {
+  background-color: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary);
+  border: none;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 1002;
+  position: relative;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.ham {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.ham::before,
+.ham::after {
+  content: "";
+  position: absolute;
+  left: 20%;
+  height: 3px;
+  width: 60%;
+  background-color: var(--md-sys-color-on-primary);
+  top: 35%;
+  transition: top 0.3s, transform 0.3s;
+}
+
+.ham::after {
+  top: 55%;
+}
+
+.task-view--open {
+  background-color: #141318 !important;
+  color: #e6e1e9 !important;
+}
+
+.task-view--open .ham::before {
+  top: 50%;
+  transform: rotate(45deg);
+}
+
+.task-view--open .ham::after {
+  top: 50%;
+  transform: rotate(-45deg);
+}
+
+.open + #calendar-view {
+  overflow: hidden;
+  max-height: 100vh;
+}

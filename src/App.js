@@ -1,24 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react"; // Import useState from react package
+import "./App.css";
+// import MyCalendar from "./components/MyCalendar";
+import TaskOutline from "./components/TaskOutline";
+import CalendarView from "./components/CalendarView";
+import "./material-theme/css/light.css";
+import "./material-theme/css/dark.css";
 
 function App() {
+  const [isTaskOutlineOpen, setTaskOutlineOpen] = useState(false);
+
+  const toggleTaskOutline = () => {
+    setTaskOutlineOpen((prev) => !prev);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main className="App light">
+      
+      <TaskOutline className={`dark ${isTaskOutlineOpen ? "open" : ""}`} />
+      <CalendarView {...{isTaskOutlineOpen, toggleTaskOutline}} />
+    </main>
   );
 }
 

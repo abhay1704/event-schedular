@@ -1,0 +1,16 @@
+.task--lists {
+  list-style-type: none;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding-top: 4rem;
+}
+
+/* Media Query for Small Screens */
+@media screen and (max-width: 768px) {
+  .task--lists {
+    padding-top: 2rem; /* Reduced padding for smaller screens */
+    gap: 1rem; /* Reduced gap between tasks */
+  }
+}
