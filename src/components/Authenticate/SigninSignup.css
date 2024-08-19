@@ -1,0 +1,87 @@
+.wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  background-color: var(--md-sys-color-primary-container);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  margin: auto;
+}
+
+h2 {
+  margin-bottom: 1.5rem;
+  color: var(--md-sys-color-on-primary-container);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--md-sys-color-surface-tint);
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+button {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  padding: 0.8rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--md-sys-color-surface-tint);
+}
+
+a {
+  color: var(--md-sys-color-primary);
+  text-align: center;
+  display: block;
+  margin-top: 1rem;
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--md-sys-color-surface-tint);
+}
+.google-btn {
+  background-color: white;
+  color: var(--md-sys-color-on-primary-container);
+  padding: 0.8rem;
+  border: 1px solid var(--md-sys-color-primary-container);
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+  margin: 2rem auto;
+}
+
+.google-btn img {
+  width: 20px;
+  height: 20px;
+}
+
+.google-btn:hover {
+  background-color: var(--md-sys-color-surface-tint);
+  color: var(--md-sys-color-on-primary);
+  border-color: var(--md-sys-color-surface-tint);
+}

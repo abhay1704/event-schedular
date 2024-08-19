@@ -1,24 +1,27 @@
-import React, { useState } from "react"; // Import useState from react package
 import "./App.css";
-// import MyCalendar from "./components/MyCalendar";
-import TaskOutline from "./components/TaskOutline";
-import CalendarView from "./components/CalendarView";
 import "./material-theme/css/light.css";
 import "./material-theme/css/dark.css";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Signin from "./components/Authenticate/SignIn";
+import Signup from "./components/Authenticate/SignUp";
+import Main from "./components/Main";
+import { DataProvider } from "./context/data";
+
+import { AuthProvider } from "./context/loginStatus";
 
 function App() {
-  const [isTaskOutlineOpen, setTaskOutlineOpen] = useState(false);
-
-  const toggleTaskOutline = () => {
-    setTaskOutlineOpen((prev) => !prev);
-  };
-
   return (
-    <main className="App light">
-      
-      <TaskOutline className={`dark ${isTaskOutlineOpen ? "open" : ""}`} />
-      <CalendarView {...{isTaskOutlineOpen, toggleTaskOutline}} />
-    </main>
+    <AuthProvider>
+      <DataProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/signin" element={<Signin />} />
+            <Route path="/signup" element={<Signup />} />
+          </Routes>
+        </Router>
+      </DataProvider>
+    </AuthProvider>
   );
 }
 

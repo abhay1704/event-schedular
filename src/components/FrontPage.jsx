@@ -1,38 +1,8 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./FrontPage.css";
 import PieChart from "./PieChart";
 import TaskCard from "./TaskCard";
-
-const tasks = [
-  {
-    name: "Research Paper Submission",
-    tag: "Personal",
-    start_time: "2024-08-21T13:00:00Z",
-    end_time: "2024-08-21T14:00:00Z",
-    description: "Submit the research paper on machine learning.",
-  },
-  {
-    name: "JavaScript Workshop",
-    tag: "Learning",
-    start_time: "2024-08-21T14:30:00Z",
-    end_time: "2024-08-21T15:30:00Z",
-    description: "Attend the workshop on modern JavaScript techniques.",
-  },
-  {
-    name: "React Webinar",
-    tag: "Learning",
-    start_time: "2024-08-19T10:00:00Z",
-    end_time: "2024-08-19T11:00:00Z",
-    description: "Attend the webinar on advanced React patterns.",
-  },
-  {
-    name: "Team Meeting",
-    tag: "Work",
-    start_time: "2024-08-19T11:30:00Z",
-    end_time: "2024-08-19T12:00:00Z",
-    description: "Weekly team sync-up meeting.",
-  },
-];
+import DataContext from "../context/data";
 
 const chartData = {
   inputData: [10, 20, 30, 25, 15], // Example data
@@ -76,7 +46,10 @@ const getSlide = ({ tag, totalCount, weekCount, monthCount }) => {
 };
 
 const FrontPage = ({ className }) => {
-  const [currentTask, setCurrentTask] = useState(tasks[0]);
+  const { data: tasks } = useContext(DataContext);
+  const [currentTask, setCurrentTask] = useState(
+    tasks && tasks.length > 0 ? tasks[0] : null
+  );
 
   const openSlide = (slideIndex) => {
     const slides = document.querySelectorAll(".slide");
@@ -163,24 +136,28 @@ const FrontPage = ({ className }) => {
             <div className="tasks__listing">
               <h2>Tasks</h2>
               <ul className="tasks__list--today" onClick={handleTask}>
-                {tasks.map((task, index) =>
-                  TaskCard({
-                    currentTask: task,
-                    colorcode,
-                    key: index,
-                    "data-index": index,
-                    active: index === active,
-                  })
-                )}
+                {tasks && tasks.length > 0
+                  ? tasks.map((task, index) =>
+                      TaskCard({
+                        currentTask: task,
+                        colorcode,
+                        key: index,
+                        "data-index": index,
+                        active: index === active,
+                      })
+                    )
+                  : "No tasks for today"}
               </ul>
             </div>
-            <div className="tasks__details--current">
-              {TaskCard({
-                currentTask,
-                colorcode,
-              })}
-              <div className="description">{currentTask.description}</div>
-            </div>
+            {currentTask && (
+              <div className="tasks__details--current">
+                {TaskCard({
+                  currentTask,
+                  colorcode,
+                })}
+                <div className="description">{currentTask.description}</div>
+              </div>
+            )}
           </div>
           <div style={{ width: "100%", height: "300px" }}>
             <PieChart {...chartData} />
