@@ -22,3 +22,22 @@ export function transformEventsToTasks(events) {
 
   return tasks;
 }
+
+export const getTime = (string_date) => {
+  const time = new Date(string_date);
+  const time_string = time.toLocaleString("en-IN", {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  });
+
+  return time_string;
+};
+
+export const firstletters = (string_) => {
+  return string_
+    .split(" ")
+    .map((word) => word[0])
+    .slice(0, 2)
+    .join("");
+};

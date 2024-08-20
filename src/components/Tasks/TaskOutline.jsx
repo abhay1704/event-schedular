@@ -1,8 +1,8 @@
-import MyCalendar from "./MyCalendar";
+import { MyCalendar } from "../Calendar";
 import TasksOverview from "./TaskOverview";
 import "./TaskOutline.css";
 
-const TaskOutline = ({className}) => {
+const TaskOutline = ({ className }) => {
   return (
     <section id="task-outline" className={className}>
       <MyCalendar />

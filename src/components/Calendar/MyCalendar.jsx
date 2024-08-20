@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./MyCalendar.css";
-import "./CalendarCommonStyle.css";
+import "../../styles/CalendarStyle.css";
 
 const localizer = momentLocalizer(moment);
 

@@ -1,14 +1,17 @@
-import { Calendar, momentLocalizer, Views } from "react-big-calendar";
+import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import { useContext, useEffect, useState } from "react";
-import "./CalendarView.css";
+
+import { Event } from "../../database/api";
+import { transformEventsToTasks } from "../../utils/utils";
+import DataContext from "../../context/data";
+
 import FrontPage from "./FrontPage";
-import "./HamStyle.css";
-import Modal from "react-modal"; // Import the modal component
-import { Event } from "../database/api";
-import { transformEventsToTasks } from "../utils";
-import DataContext from "../context/data";
-import AuthContext from "../context/loginStatus";
+import { Header } from "../Shared";  //Test
+import {EventAdder} from "../Events";
+
+import "./CalendarView.css";
+import "../../styles/HamStyle.css";
 
 const localizer = momentLocalizer(moment);
 
@@ -31,7 +34,6 @@ const CalendarView = ({ className, isTaskOutlineOpen, toggleTaskOutline }) => {
   const [events, setEvents] = useState([]); // State to hold the events
   const [modalIsOpen, setModalIsOpen] = useState(false); // State to control modal visibility
   const { setData } = useContext(DataContext);
-  const { user } = useContext(AuthContext);
   const [newEvent, setNewEvent] = useState({
     name: "",
     tag: "",
@@ -88,48 +90,14 @@ const CalendarView = ({ className, isTaskOutlineOpen, toggleTaskOutline }) => {
 
   return (
     <section id="calendar-view" className={className}>
-      <div className="rbc-view--change">
-        {window.innerWidth < 768 && (
-          <button
-            id="open-task-outline-btn"
-            className={isTaskOutlineOpen ? "task-view--open" : ""}
-            onClick={toggleTaskOutline}
-          >
-            <span className="ham" aria-hidden></span>
-          </button>
-        )}
-        {!user && (
-          <button>
-            <a
-              href="/signIn"
-              style={{
-                color: "var(--md-sys-color-on-primary)",
-                height: "fit-content",
-                marginTop: "0",
-              }}
-            >
-              Sign In
-            </a>
-          </button>
-        )}
-        <button
-          onClick={handleToggleView}
-          style={{
-            display: "inline-block",
-            marginLeft: "auto",
-            padding: "0.5rem 1rem",
-            fontSize: "1rem",
-            backgroundColor: "var(--md-sys-color-secondary)",
-            color: "var(--md-sys-color-on-secondary)",
-            border: "none",
-            borderRadius: "0.5rem",
-            cursor: "pointer",
-            textAlign: "right",
-          }}
-        >
-          {showCustomDayView ? "Back to Calendar" : "Today's Agenda"}
-        </button>
-      </div>
+      <Header
+        {...{
+          isTaskOutlineOpen,
+          toggleTaskOutline,
+          handleToggleView,
+          showCustomDayView,
+        }}
+      />
       {showCustomDayView ? (
         <FrontPage className="light" />
       ) : (
@@ -148,48 +116,15 @@ const CalendarView = ({ className, isTaskOutlineOpen, toggleTaskOutline }) => {
         />
       )}
 
-      {/* Event Details Modal */}
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
-        style={{ zIndex: 2000 }}
-      >
-        <h2>Add New Event</h2>
-        <form>
-          <label>
-            Name:
-            <input
-              type="text"
-              value={newEvent.name}
-              onChange={(e) =>
-                setNewEvent({ ...newEvent, name: e.target.value })
-              }
-            />
-          </label>
-          <label>
-            Tag:
-            <input
-              type="text"
-              value={newEvent.tag}
-              onChange={(e) =>
-                setNewEvent({ ...newEvent, tag: e.target.value })
-              }
-            />
-          </label>
-          <label>
-            Description:
-            <textarea
-              value={newEvent.description}
-              onChange={(e) =>
-                setNewEvent({ ...newEvent, description: e.target.value })
-              }
-            />
-          </label>
-          <button type="button" onClick={handleAddEvent}>
-            Add Event
-          </button>
-        </form>
-      </Modal>
+      <EventAdder
+        {...{
+          handleAddEvent,
+          newEvent,
+          setNewEvent,
+          modalIsOpen,
+          setModalIsOpen,
+        }}
+      />
     </section>
   );
 };

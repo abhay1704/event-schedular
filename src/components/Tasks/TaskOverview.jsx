@@ -1,10 +1,10 @@
 import TaskList from "./TaskList";
 import "./TaskOverview.css";
-import { getUserEvents } from "../database/api";
+import { getUserEvents } from "../../database/api";
 import { useContext, useEffect, useState } from "react";
-import AuthContext from "../context/loginStatus";
-import { transformEventsToTasks } from "../utils";
-import DataContext from "../context/data";
+import AuthContext from "../../context/loginStatus";
+import { transformEventsToTasks } from "../../utils/utils.js";
+import DataContext from "../../context/data";
 
 const TaskOverview = () => {
   const [tasks, setTasks] = useState();

@@ -1,0 +1,108 @@
+/* src/components/EventAdder.css */
+
+/* Modal Container */
+.ReactModal__Overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.ReactModal__Content {
+  background-color: var(--md-sys-color-surface, #ffffff);
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 2001;
+}
+
+/* Heading */
+.ReactModal__Content h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: var(--md-sys-color-on-surface, #333);
+  text-align: center;
+}
+
+/* Form Styles */
+.ReactModal__Content form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Label Styles */
+.ReactModal__Content label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface, #555);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Input and Textarea Styles */
+.ReactModal__Content input,
+.ReactModal__Content textarea {
+  font-size: 1rem;
+  padding: 10px;
+  border: 1px solid var(--md-sys-color-outline, #ccc);
+  border-radius: 4px;
+  background-color: var(--md-sys-color-surface-variant, #f7f7f7);
+  color: var(--md-sys-color-on-surface, #333);
+}
+
+.ReactModal__Content textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Button Styles */
+.ReactModal__Content button {
+  padding: 10px 15px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-primary, #ffffff);
+  background-color: var(--md-sys-color-primary, #6200ea);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 15px;
+}
+
+.ReactModal__Content button:hover {
+  background-color: var(--md-sys-color-primary-dark, #3700b3);
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 600px) {
+  .ReactModal__Content {
+    max-width: 90%;
+    padding: 15px;
+  }
+
+  .ReactModal__Content h2 {
+    font-size: 1.25rem;
+  }
+
+  .ReactModal__Content label {
+    font-size: 0.9rem;
+  }
+
+  .ReactModal__Content input,
+  .ReactModal__Content textarea {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  .ReactModal__Content button {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
+}

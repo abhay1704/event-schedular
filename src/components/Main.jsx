@@ -1,5 +1,5 @@
-import TaskOutline from "./TaskOutline";
-import CalendarView from "./CalendarView";
+import { Outline } from "./Tasks";
+import { CalendarView } from "./Calendar";
 import { useState } from "react";
 
 const Main = () => {
@@ -11,7 +11,7 @@ const Main = () => {
 
   return (
     <main className="App light">
-      <TaskOutline className={`dark ${isTaskOutlineOpen ? "open" : ""}`} />
+      <Outline className={`dark ${isTaskOutlineOpen ? "open" : ""}`} />
       <CalendarView {...{ isTaskOutlineOpen, toggleTaskOutline }} />
     </main>
   );

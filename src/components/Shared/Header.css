@@ -1,0 +1,20 @@
+.rbc-view--change {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 0.5rem;
+}
+
+
+@media screen and (max-width: 768px) {
+  .rbc-view--change {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 100%;
+    margin: -1rem;
+    background-color: var(--md-sys-color-secondary);
+    color: var(--md-sys-color-on-secondary);
+  }
+}

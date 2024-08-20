@@ -1,14 +1,6 @@
 #calendar-view {
   position: relative;
 
-  .rbc-view--change {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    padding: 0.5rem;
-  }
-
   .rbc-now,
   .rbc-today {
     background-color: transparent;
@@ -61,16 +53,6 @@
 
   /* Responsive Styles */
   @media screen and (max-width: 768px) {
-    .rbc-view--change {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      min-width: 100%;
-      margin: -1rem;
-      background-color: var(--md-sys-color-secondary);
-      color: var(--md-sys-color-on-secondary);
-    }
-
     .rbc-toolbar {
       display: grid !important;
       grid-template-columns: 1fr 1fr;
