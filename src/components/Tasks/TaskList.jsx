@@ -1,6 +1,5 @@
 import "./TaskList.css";
 
-
 const TaskList = ({ date, tasks }) => {
   const today = new Date();
   const isToday = date.toDateString() === today.toDateString();
@@ -25,7 +24,10 @@ const TaskList = ({ date, tasks }) => {
       <ul className="tasks">
         {tasks &&
           tasks.map(
-            ({ start_time, end_time, tag, name, description }, index) => {
+            (
+              { start_time, end_time, tag, title: name, description },
+              index
+            ) => {
               let start = new Date(start_time);
               let end = new Date(end_time);
               start = start.toLocaleTimeString("en-IN", {
@@ -39,7 +41,12 @@ const TaskList = ({ date, tasks }) => {
                 hour12: true,
               });
               return (
-                <li key={index} className={"task " + tag.toLowerCase() + "-tag"}>
+                <li
+                  key={index}
+                  className={
+                    "task " + (!tag ? "none" : tag.toLowerCase()) + "-tag"
+                  }
+                >
                   <div className="task--content">
                     <div className="task--time">
                       <span>{start}</span> - <span>{end}</span>

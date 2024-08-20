@@ -9,10 +9,10 @@ const COLOR_CODE = {
   learning: "#f8e71c",
   finance: "#50e3c2",
   miscellaneous: "#9b9b9b",
+  project: "#417505",
 };
-const StylingContext = createContext({
-  COLOR_CODE,
-});
+
+const StylingContext = createContext();
 
 export default StylingContext;
 
@@ -20,13 +20,14 @@ export const StylingProvider = ({ children }) => {
   const [colorcode, setColorcode] = useState(COLOR_CODE);
 
   const addColor = (tag, color) => {
-    setColorcode((prev) => {
-      return { ...prev, [tag]: color };
-    });
+    setColorcode((prev) => ({
+      ...prev,
+      [tag]: color,
+    }));
   };
 
   const removeColor = (tag) => {
-    if (tag in Object.keys(COLOR_CODE)) {
+    if (tag in COLOR_CODE) {
       console.error("Cannot remove default color");
       return;
     }

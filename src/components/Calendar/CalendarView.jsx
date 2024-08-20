@@ -1,17 +1,21 @@
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import { useContext, useEffect, useState } from "react";
+import { Notification } from "../Shared";
 
 import { Event } from "../../database/api";
-import { transformEventsToTasks } from "../../utils/utils";
+import { transformRawEvents, transformEventsToTasks } from "../../utils/utils";
 import DataContext from "../../context/data";
+import AuthContext from "../../context/loginStatus";
+import { EventContext } from "../../context/data";
 
 import FrontPage from "./FrontPage";
-import { Header } from "../Shared";  //Test
-import {EventAdder} from "../Events";
+import { Header } from "../Shared"; //Test
+import { EventAdder } from "../Events";
 
 import "./CalendarView.css";
 import "../../styles/HamStyle.css";
+import StylingContext from "../../context/styling";
 
 const localizer = momentLocalizer(moment);
 
@@ -31,15 +35,32 @@ const CustomTimeHeader = ({ label }) => {
 
 const CalendarView = ({ className, isTaskOutlineOpen, toggleTaskOutline }) => {
   const [showCustomDayView, setShowCustomDayView] = useState(false);
-  const [events, setEvents] = useState([]); // State to hold the events
   const [modalIsOpen, setModalIsOpen] = useState(false); // State to control modal visibility
+  const [notification, setNotification] = useState();
   const { setData } = useContext(DataContext);
+  const { events, setEvents } = useContext(EventContext);
+  const { user } = useContext(AuthContext);
+
+  const { colorcode } = useContext(StylingContext);
+
+  const eventPropGetter = (event, start, end, isSelected) => {
+    const style = {
+      backgroundColor: colorcode[event.tag],
+      borderRadius: "5px",
+      opacity: 0.8,
+      display: "block",
+    };
+    return { style };
+  };
+
   const [newEvent, setNewEvent] = useState({
-    name: "",
+    title: "",
     tag: "",
-    start: "",
-    end: "",
+    start_time: "",
+    end_time: "",
     description: "",
+    recurrence: "never",
+    uid: user.uid,
   }); // State to hold new event details
 
   useEffect(() => {
@@ -61,30 +82,37 @@ const CalendarView = ({ className, isTaskOutlineOpen, toggleTaskOutline }) => {
   };
 
   const handleSelectSlot = ({ start, end }) => {
-    setNewEvent({ ...newEvent, start, end });
-    setModalIsOpen(true); // Open modal to input event details
+    setNewEvent({
+      ...newEvent,
+      start_time: start,
+      end_time: end,
+      uid: user.uid,
+    });
+    setModalIsOpen(true);
   };
 
-  const handleAddEvent = async (title, description, date, time, user) => {
-    if (!user || !user.uid) {
-      console.error("User is not authenticated");
+  const handleAddEvent = async (e) => {
+    if (!user.success) {
+      setNotification({
+        message: "Please Signin to Add Tasks",
+        type: "error",
+      });
       setModalIsOpen(false);
       return;
     }
 
-    const newEvent = new Event(title, description, date, time, user.uid);
-
-    const eventId = await newEvent.save();
-    setModalIsOpen(false);
-
+    const ev = new Event(newEvent);
+    const eventId = await ev.save();
     if (eventId) {
-      console.log("Event saved with ID:", eventId);
-      setData((prev) => {
-        transformEventsToTasks([...events, newEvent]);
+      setNotification({
+        message: "Event saved successfully",
+        type: "success",
       });
-      // Update your state or UI with the new event if needed
-    } else {
-      console.error("Failed to save event");
+      setModalIsOpen(false);
+
+      const updatedEvents = [...events, { ...newEvent }];
+      setEvents(updatedEvents);
+      setData(transformEventsToTasks(updatedEvents));
     }
   };
 
@@ -106,13 +134,14 @@ const CalendarView = ({ className, isTaskOutlineOpen, toggleTaskOutline }) => {
           localizer={localizer}
           startAccessor="start"
           endAccessor="end"
-          events={events} // Pass the events state to the Calendar component
+          events={transformRawEvents(events)}
           selectable
-          onSelectSlot={handleSelectSlot} // Handle slot selection for adding events
+          onSelectSlot={handleSelectSlot}
           components={{
-            timeGutterHeader: CustomTimeHeader, // Customize the time gutter header
-            header: CustomTimeHeader, // Customize the day header
+            timeGutterHeader: CustomTimeHeader,
+            header: CustomTimeHeader,
           }}
+            eventPropGetter={eventPropGetter}
         />
       )}
 
@@ -125,6 +154,7 @@ const CalendarView = ({ className, isTaskOutlineOpen, toggleTaskOutline }) => {
           setModalIsOpen,
         }}
       />
+      {notification && <Notification {...notification} />}
     </section>
   );
 };

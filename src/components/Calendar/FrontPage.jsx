@@ -3,7 +3,8 @@ import "./FrontPage.css";
 import { Piechart, Presentation } from "../Shared";
 import { TaskCard, DetailedTask } from "../Tasks";
 import DataContext from "../../context/data";
-import StylingContext from "../../context/styling";
+import AuthContext from "../../context/loginStatus";
+import { capitalize } from "../../utils/utils";
 
 const chartData = {
   inputData: [10, 20, 30, 25, 15], // Example data
@@ -17,7 +18,11 @@ const chartData = {
 };
 
 const FrontPage = ({ className }) => {
-  const { data: tasks } = useContext(DataContext);
+  const { data } = useContext(DataContext);
+  const today = new Date().toLocaleDateString("en-IN");
+  const tasks = data[today];
+  const { user } = useContext(AuthContext);
+  console.log(tasks);
   const [currentTask, setCurrentTask] = useState(
     tasks && tasks.length > 0 ? tasks[0] : null
   );
@@ -35,7 +40,15 @@ const FrontPage = ({ className }) => {
   return (
     <section id="front-page" className={className}>
       <h1 className="greet-msg">
-        Good Morning <span className="front-page__username">BSDK!</span>
+        Good Morning{" "}
+        <span className="front-page__username">
+          {user.success
+            ? capitalize(
+                user.name ?? user.email.slice(0, user.email.indexOf("@"))
+              )
+            : ""}
+          !
+        </span>
       </h1>
 
       <div className="front-page__content">

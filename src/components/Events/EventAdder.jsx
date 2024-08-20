@@ -1,6 +1,8 @@
 import Modal from "react-modal";
 import "./EventAdder.css";
 
+Modal.setAppElement("#root");
+
 const EventAdder = ({
   modalIsOpen,
   setModalIsOpen,
@@ -17,11 +19,13 @@ const EventAdder = ({
       <h2>Add New Event</h2>
       <form>
         <label>
-          Name:
+          Title:
           <input
             type="text"
-            value={newEvent.name}
-            onChange={(e) => setNewEvent({ ...newEvent, name: e.target.value })}
+            value={newEvent.title}
+            onChange={(e) =>
+              setNewEvent({ ...newEvent, title: e.target.value })
+            }
           />
         </label>
         <label>

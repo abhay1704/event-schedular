@@ -11,9 +11,9 @@ import { AuthProvider } from "./context/loginStatus";
 
 function App() {
   return (
-    <AuthProvider>
-      <DataProvider>
-        <StylingProvider>
+    <StylingProvider>
+      <AuthProvider>
+        <DataProvider>
           <Router>
             <Routes>
               <Route path="/" element={<Main />} />
@@ -21,9 +21,9 @@ function App() {
               <Route path="/signup" element={<Signup />} />
             </Routes>
           </Router>
-        </StylingProvider>
-      </DataProvider>
-    </AuthProvider>
+        </DataProvider>
+      </AuthProvider>
+    </StylingProvider>
   );
 }
 

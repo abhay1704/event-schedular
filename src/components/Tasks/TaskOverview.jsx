@@ -4,24 +4,30 @@ import { getUserEvents } from "../../database/api";
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../../context/loginStatus";
 import { transformEventsToTasks } from "../../utils/utils.js";
-import DataContext from "../../context/data";
+import DataContext, { EventContext } from "../../context/data";
+import { Notification } from "../Shared";
 
 const TaskOverview = () => {
   const [tasks, setTasks] = useState();
   const { setData } = useContext(DataContext);
+  const { setEvents } = useContext(EventContext);
   const { user } = useContext(AuthContext);
+  const [notification, setNotification] = useState();
+ 
+
   useEffect(() => {
-    if (!user) {
-      alert("Pls Login to Add/View Tasks");
+    if (!user.success) {
+      setNotification({ message: "Please Signin to Add or View Tasks" });
       return;
     }
-    getUserEvents(user.uid).then((events) => {
+    getUserEvents(user).then((events) => {
+      setEvents(events);
       const tasks = transformEventsToTasks(events);
       setTasks(tasks);
       setData(tasks);
       console.log(tasks);
     });
-  }, [user, setData]);
+  }, [user, setData, setEvents]);
 
   return (
     <section id="tasks-overview">
@@ -30,7 +36,7 @@ const TaskOverview = () => {
           Array.from({ length: 7 }).map((_, index) => {
             const date = new Date();
             date.setDate(date.getDate() + index);
-            const formattedDate = date.toISOString().split("T")[0];
+            const formattedDate = date.toLocaleDateString("en-IN");
             const task = tasks[formattedDate];
 
             return task ? (
@@ -40,6 +46,7 @@ const TaskOverview = () => {
             );
           })}
       </ul>
+      {notification && <Notification {...notification} />}
     </section>
   );
 };

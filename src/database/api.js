@@ -2,31 +2,73 @@ import app from "./config";
 import {
   collection,
   addDoc,
-  getDocs,
-  query,
-  where,
   getFirestore,
+  Timestamp,
+  setDoc,
+  doc,
+  updateDoc,
+  arrayUnion,
+  getDoc,
+  arrayRemove,
 } from "firebase/firestore";
 
 const db = getFirestore(app);
 
+const createUserDocument = async ({ uid, email, name }) => {
+  try {
+    if (!uid) return;
+
+    const userRef = doc(db, "user-xx1", uid);
+    const docSnap = await getDoc(userRef);
+
+    if (!docSnap.exists()) {
+      await setDoc(userRef, {
+        email: email || "",
+        name: name || email.split("@")[0] || "",
+        events: [],
+      });
+      console.log("User document created with ID: ", uid);
+    } else {
+      console.log("User document already exists.");
+    }
+
+    return uid;
+  } catch (error) {
+    console.error("Error creating user document: ", error);
+  }
+};
+
 export class Event {
-  constructor(title, description, date, time, uid) {
-    this.title = title;
-    this.description = description;
-    this.date = date;
-    this.time = time;
-    this.uid = uid; // Store the user's UID
+  constructor({
+    title,
+    description,
+    start_time,
+    end_time,
+    uid,
+    recurrence,
+    tag,
+  }) {
+    this.docDetail = {
+      title: title,
+      description: description,
+      start_time: Timestamp.fromDate(start_time),
+      end_time: Timestamp.fromDate(end_time),
+      uid: uid,
+      recurrence: recurrence,
+      tag: tag,
+    };
+    console.log(this.docDetail);
   }
 
   async save() {
     try {
-      const docRef = await addDoc(collection(db, "events-xx1"), {
-        title: this.title,
-        description: this.description,
-        date: this.date,
-        time: this.time,
-        uid: this.uid, // Include the UID in the event document
+      console.log("Adding document...");
+      const docRef = await addDoc(collection(db, "events-xx1"), this.docDetail);
+      console.log("Document written with ID: ", docRef.id);
+      const userRef = doc(db, "user-xx1", this.docDetail.uid);
+      console.log(userRef);
+      await updateDoc(userRef, {
+        events: arrayUnion(docRef),
       });
       return docRef.id;
     } catch (error) {
@@ -36,46 +78,72 @@ export class Event {
   }
 }
 
-const getUserData = async (uid) => {
+export const deleteEvent = async (docsRef) => {
   try {
-    const q = query(collection(db, "user-xx1"), where("uid", "==", uid));
-    const data = await getDocs(q);
-    return data;
+    const querySnapshot = await getDoc(docsRef);
+    const docRef = querySnapshot.docs[0].ref;
+    await updateDoc(docRef, {
+      deleted: true,
+    });
+    const userRef = doc(db, "user-xx1", this.docDetail.uid);
+    await updateDoc(userRef, {
+      events: arrayRemove(docRef),
+    });
+    return true;
   } catch (error) {
-    console.log(error);
+    console.error("Error deleting document: ", error);
+    return false;
   }
 };
 
-export const getUserEvents = async (uid) => {
-  // Get user's event IDs
-  const userData = await getUserData(uid);
-  if (!userData || userData.length === 0) {
-    console.log("User data not found");
-    return [];
-  }
-  const eventsArray = userData.events; // Assuming this is an array of event IDs
-
-  if (!eventsArray || eventsArray.length === 0) {
-    console.log("No events found for the user.");
-    return [];
-  }
-
-  // Query Firestore to get events where eventId is in the eventsArray
-  const q = query(
-    collection(db, "events-xxl"),
-    where("eventId", "in", eventsArray) // Adjust 'eventId' to match your document field name
-  );
-
+export const updateEvent = async (docsRef, newEvent) => {
   try {
-    const querySnapshot = await getDocs(q);
-    const events = [];
-    querySnapshot.forEach((doc) => {
-      events.push({ id: doc.id, ...doc.data() });
+    await updateDoc(docsRef, {
+      title: newEvent.title,
+      description: newEvent.description,
+      start_time: Timestamp.fromDate(newEvent.start_time),
+      end_time: Timestamp.fromDate(newEvent.end_time),
+      uid: newEvent.uid,
+      recurrence: newEvent.recurrence,
     });
 
+    return true;
+  } catch (error) {
+    console.error("Error updating document: ", error);
+    return false;
+  }
+};
+
+export const getUserEvents = async (user, ensure = true) => {
+  const userRef = doc(db, "user-xx1", user.uid);
+  const userSnap = await getDoc(userRef);
+
+  if (!userSnap.exists()) {
+    if (ensure) await createUserDocument(user);
+    return [];
+  }
+
+  const eventsArray = userSnap.data().events || [];
+  const events = [];
+
+  try {
+    for (const eventRef of eventsArray) {
+      const eventSnap = await getDoc(eventRef);
+      if (eventSnap.exists()) {
+        const event = eventSnap.data();
+        event.ref = eventSnap.id;
+        event.start_time = event.start_time.toDate();
+        event.end_time = event.end_time.toDate();
+        events.push(event);
+      } else {
+        await updateDoc(userRef, {
+          events: arrayRemove(eventRef),
+        });
+      }
+    }
     return events;
   } catch (error) {
-    console.error("Error getting documents: ", error);
+    console.error("Error retrieving user events: ", error);
     return [];
   }
 };

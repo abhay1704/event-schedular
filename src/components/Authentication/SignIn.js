@@ -6,13 +6,15 @@ import "./SigninSignup.css";
 import { signInByEmailPwd } from "../../database/authenticate";
 import AuthContext from "../../context/loginStatus";
 import { useNavigate } from "react-router-dom";
+import { Notification } from "../Shared";
 
 const Signin = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("abhay@xmail.com");
+  const [password, setPassword] = useState("testing");
   const { login } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [notification, setNotification] = useState();
 
   const handleSignin = async (e) => {
     setIsLoading(true);
@@ -20,25 +22,31 @@ const Signin = () => {
     try {
       const result = await signInByEmailPwd(email, password);
       if (!result.success) {
-        alert("Unable to Signin, ", result.errorMessage);
+        setNotification({
+          message: result.errorMessage,
+          type: "error",
+        });
         return;
       }
-
-      login({ uid: result.uid, accessToken: result.accessToken });
+      login(result);
       navigate("/");
     } catch (error) {
-      console.error("Error signing in:", error);
+      console.error(error);
+      setNotification({
+        message: "An error occurred. Please try again later.",
+        type: "error",
+      });
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="wrapper">
+    <div className="wrapper light">
       {isLoading ? (
         <div className="spinner"></div>
       ) : (
-        <div className="container light">
+        <div className="container">
           <h2>Sign In</h2>
           <form onSubmit={handleSignin}>
             <input
@@ -66,6 +74,10 @@ const Signin = () => {
           </button>
           <a href="/signup">Don't have an account? Sign Up</a>
         </div>
+      )}
+
+      {notification && (
+        <Notification type={notification.type} message={notification.message} />
       )}
     </div>
   );

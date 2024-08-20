@@ -4,12 +4,13 @@ import StylingContext from "../../context/styling";
 import { getTime, firstletters } from "../../utils/utils";
 
 const TaskCard = ({
-  currentTask: { name, tag, start_time },
+  currentTask: { title: name, tag, start_time },
   key,
   active,
   ...props
 }) => {
   const { colorcode } = useContext(StylingContext);
+  console.log(colorcode);
 
   return (
     <li

@@ -21,7 +21,7 @@ const Header = ({
           <span className="ham" aria-hidden></span>
         </button>
       )}
-      {!user && (
+      {!user.success && (
         <button>
           <a
             href="/signIn"

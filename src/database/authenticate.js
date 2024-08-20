@@ -22,6 +22,8 @@ export const signUPByEmailPwd = async (email, password) => {
       success: true,
       accessToken: user.accessToken,
       uid: user.uid,
+      email: user.email,
+      name: user.displayName,
     };
   } catch (error) {
     const errorCode = error.code;
@@ -43,11 +45,14 @@ export const signInByEmailPwd = async (email, password) => {
       password
     );
     const user = userCredential.user;
+    console.log("Logged in Successfully from Authenticat.js");
 
     return {
       success: true,
       accessToken: user.accessToken,
       uid: user.uid,
+      email: user.email,
+      name: user.displayName,
     };
   } catch (error) {
     const errorCode = error.code;
@@ -72,6 +77,7 @@ export const signInWithGoogle = () => {
     const result = signInWithPopup(auth, provider);
     const credential = GoogleAuthProvider.credentialFromResult(result);
     const token = credential.accessToken;
+    // const email =
     // The signed-in user info.
     const user = result.user;
     return {

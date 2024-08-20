@@ -130,7 +130,7 @@ a:hover {
 }
 
 .spinner {
-  border: 8px solid rgba(0, 0, 0, 0.1);
+  border: 8px solid var(--md-sys-color-background);
   border-top: 8px solid var(--md-sys-color-primary);
   border-radius: 50%;
   width: 50px;

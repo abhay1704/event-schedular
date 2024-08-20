@@ -44,7 +44,7 @@
   border-radius: 50%;
   position: absolute;
   top: 50%;
-  left: 14px;
+  left: 14.5px;
   transform: translateY(-50%);
   background-color: var(--data-color);
   display: flex;
