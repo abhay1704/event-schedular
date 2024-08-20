@@ -16,6 +16,7 @@ import { EventAdder } from "../Events";
 import "./CalendarView.css";
 import "../../styles/HamStyle.css";
 import StylingContext from "../../context/styling";
+import { useNavigate } from "react-router-dom";
 
 const localizer = momentLocalizer(moment);
 
@@ -40,6 +41,7 @@ const CalendarView = ({ className, isTaskOutlineOpen, toggleTaskOutline }) => {
   const { setData } = useContext(DataContext);
   const { events, setEvents } = useContext(EventContext);
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const { colorcode } = useContext(StylingContext);
 
@@ -141,7 +143,10 @@ const CalendarView = ({ className, isTaskOutlineOpen, toggleTaskOutline }) => {
             timeGutterHeader: CustomTimeHeader,
             header: CustomTimeHeader,
           }}
-            eventPropGetter={eventPropGetter}
+          eventPropGetter={eventPropGetter}
+          onSelectEvent={(event) => {
+            navigate(`/events/${event.ref}`);
+          }}
         />
       )}
 

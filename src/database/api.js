@@ -78,6 +78,26 @@ export class Event {
   }
 }
 
+export const getEvent = async (id) => {
+  try {
+    const docRef = doc(db, "events-xx1", id);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const event = docSnap.data();
+      event.ref = docSnap.id;
+      event.start_time = event.start_time.toDate();
+      event.end_time = event.end_time.toDate();
+      return event;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error getting document: ", error);
+    return null;
+  }
+};
+
 export const deleteEvent = async (docsRef) => {
   try {
     const querySnapshot = await getDoc(docsRef);

@@ -56,6 +56,58 @@ export const transformRawEvents = (rawEvents) => {
     description: event.description,
     uid: event.uid,
     tag: event.tag,
+    ref: event.ref,
     // Add any other properties you need
   }));
+};
+
+const generateICS = (event) => {
+  const start = new Date(event.start_time)
+    .toISOString()
+    .replace(/-|:|\.\d+/g, "");
+  const end = new Date(event.end_time).toISOString().replace(/-|:|\.\d+/g, "");
+  const description = event.description || "";
+  const location = event.location || "";
+
+  return `BEGIN:VCALENDAR
+          VERSION:2.0
+          PRODID:-//Your Organization//Your Product//EN
+          BEGIN:VEVENT
+          UID:${event.id}
+          DTSTAMP:${new Date().toISOString().replace(/-|:|\.\d+/g, "")}
+          DTSTART:${start}
+          DTEND:${end}
+          SUMMARY:${event.title}
+          DESCRIPTION:${description}
+          LOCATION:${location}
+          END:VEVENT
+          END:VCALENDAR`;
+};
+
+export const downloadICS = (event) => {
+  const icsContent = generateICS(event);
+  const blob = new Blob([icsContent], { type: "text/calendar" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${event.title}.ics`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
+
+export const shareEvent = (event) => {
+  if (navigator.share) {
+    navigator
+      .share({
+        title: event.title,
+        text: event.description,
+        url: window.location.href,
+      })
+      .then(() => console.log("Event shared successfully"))
+      .catch((error) => console.error("Error sharing event:", error));
+  } else {
+    console.error("Web Share API is not supported in this browser.");
+  }
 };

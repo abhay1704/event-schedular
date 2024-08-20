@@ -8,6 +8,7 @@ import Main from "./components/Main";
 import { DataProvider } from "./context/data";
 import { StylingProvider } from "./context/styling";
 import { AuthProvider } from "./context/loginStatus";
+import {EventDetail} from "./components/Events"
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Router>
             <Routes>
               <Route path="/" element={<Main />} />
+              <Route path="/events/:id" element={<EventDetail />} />
               <Route path="/signin" element={<Signin />} />
               <Route path="/signup" element={<Signup />} />
             </Routes>
