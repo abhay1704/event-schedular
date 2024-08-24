@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import {getStats} from "../../utils/utils";                                    
 import "./Presentation.css";
 
 const getSlide = ({ tag, totalCount, weekCount, monthCount }) => {
@@ -47,7 +48,7 @@ const handleChangeSlide = (e) => {
   openSlide(slideIndex);
 };
 
-const Presentation = () => {
+const Presentation = ({tasks}) => {
   useEffect(() => {
     const interval = setInterval(() => {
       nextSlide();
@@ -55,6 +56,8 @@ const Presentation = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+  const stats = getStats(tasks);
 
   return (
     <>

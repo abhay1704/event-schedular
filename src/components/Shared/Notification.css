@@ -27,7 +27,7 @@
 }
 
 .notification.general {
-  background-color: #2196f3;
+  background-color: var(--md-sys-colors-secondary);
 }
 
 .close-btn {

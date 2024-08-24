@@ -37,7 +37,7 @@ const CustomTimeHeader = ({ label }) => {
 const CalendarView = ({ className, isTaskOutlineOpen, toggleTaskOutline }) => {
   const [showCustomDayView, setShowCustomDayView] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false); // State to control modal visibility
-  const [notification, setNotification] = useState();
+  const [notification, _setNotification] = useState();
   const { setData } = useContext(DataContext);
   const { events, setEvents } = useContext(EventContext);
   const { user } = useContext(AuthContext);
@@ -53,6 +53,13 @@ const CalendarView = ({ className, isTaskOutlineOpen, toggleTaskOutline }) => {
       display: "block",
     };
     return { style };
+  };
+
+  const setNotification = (notification) => {
+    _setNotification(notification);
+    setTimeout(() => {
+      _setNotification(null);
+    }, 3000);
   };
 
   const [newEvent, setNewEvent] = useState({
@@ -84,10 +91,13 @@ const CalendarView = ({ className, isTaskOutlineOpen, toggleTaskOutline }) => {
   };
 
   const handleSelectSlot = ({ start, end }) => {
+    const start_d = new Date(start);
+    const end_d = new Date(end);
+
     setNewEvent({
       ...newEvent,
-      start_time: start,
-      end_time: end,
+      start_time: start_d.toISOString().slice(0, 16),
+      end_time: end_d.toISOString().slice(0, 16),
       uid: user.uid,
     });
     setModalIsOpen(true);

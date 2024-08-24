@@ -13,7 +13,6 @@ const TaskOverview = () => {
   const { setEvents } = useContext(EventContext);
   const { user } = useContext(AuthContext);
   const [notification, setNotification] = useState();
- 
 
   useEffect(() => {
     if (!user.success) {
@@ -25,7 +24,6 @@ const TaskOverview = () => {
       const tasks = transformEventsToTasks(events);
       setTasks(tasks);
       setData(tasks);
-      console.log(tasks);
     });
   }, [user, setData, setEvents]);
 

@@ -8,7 +8,8 @@ const EventAdder = ({
   setModalIsOpen,
   newEvent,
   setNewEvent,
-  handleAddEvent,
+  handleUpdateEvent,
+  handleCancelUpdate,
 }) => {
   return (
     <Modal
@@ -16,7 +17,7 @@ const EventAdder = ({
       onRequestClose={() => setModalIsOpen(false)}
       style={{ zIndex: 2000 }}
     >
-      <h2>Add New Event</h2>
+      <h2>Update Event</h2>
       <form>
         <label>
           Title:
@@ -85,9 +86,14 @@ const EventAdder = ({
           </select>
         </label>
 
-        <button type="button" onClick={handleAddEvent}>
-          Add Event
-        </button>
+        <div className="btn-group">
+          <button type="button" className="cancel" onClick={handleCancelUpdate}>
+            Cancel
+          </button>
+          <button type="button" onClick={handleUpdateEvent}>
+            Update Event
+          </button>
+        </div>
       </form>
     </Modal>
   );

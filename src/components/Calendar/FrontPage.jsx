@@ -22,7 +22,9 @@ const FrontPage = ({ className }) => {
   const today = new Date().toLocaleDateString("en-IN");
   const tasks = data[today];
   const { user } = useContext(AuthContext);
-  console.log(tasks);
+  const hour = new Date().getHours();
+  const greet = hour < 12 ? "Morning" : hour < 5 ? "Afternoon" : "Evening";
+
   const [currentTask, setCurrentTask] = useState(
     tasks && tasks.length > 0 ? tasks[0] : null
   );
@@ -40,7 +42,7 @@ const FrontPage = ({ className }) => {
   return (
     <section id="front-page" className={className}>
       <h1 className="greet-msg">
-        Good Morning{" "}
+        Good {greet}{" "}
         <span className="front-page__username">
           {user.success
             ? capitalize(
@@ -52,30 +54,36 @@ const FrontPage = ({ className }) => {
       </h1>
 
       <div className="front-page__content">
-        <div className="front-page__left">
-          <Presentation />
-          <div className="tasks">
-            <div className="tasks__listing">
-              <h2>Tasks</h2>
-              <ul className="tasks__list--today" onClick={handleTask}>
-                {tasks && tasks.length > 0
-                  ? tasks.map((task, index) =>
-                      TaskCard({
-                        currentTask: task,
-                        key: index,
-                        "data-index": index,
-                        active: index === active,
-                      })
-                    )
-                  : "No tasks for today"}
-              </ul>
+        {!user.success ? (
+          <div className="msg-container">
+            <p className="msg">Please Sign in to view your tasks</p>
+          </div>
+        ) : (
+          <div className="front-page__left">
+            <Presentation tasks={tasks} />
+            <div className="tasks">
+              <div className="tasks__listing">
+                <h2>Tasks</h2>
+                <ul className="tasks__list--today" onClick={handleTask}>
+                  {tasks && tasks.length > 0
+                    ? tasks.map((task, index) =>
+                        TaskCard({
+                          currentTask: task,
+                          key: index,
+                          "data-index": index,
+                          active: index === active,
+                        })
+                      )
+                    : "No tasks for today"}
+                </ul>
+              </div>
+              {currentTask && <DetailedTask {...{ currentTask }} />}
             </div>
-            {currentTask && <DetailedTask {...{ currentTask }} />}
+            <div style={{ width: "100%", height: "300px" }}>
+              <Piechart {...chartData} />
+            </div>
           </div>
-          <div style={{ width: "100%", height: "300px" }}>
-            <Piechart {...chartData} />
-          </div>
-        </div>
+        )}
       </div>
     </section>
   );

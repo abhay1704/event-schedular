@@ -111,3 +111,13 @@ export const shareEvent = (event) => {
     console.error("Web Share API is not supported in this browser.");
   }
 };
+
+export const getStats = (tasks) => {
+  const stats = {
+    total: tasks.length,
+  };
+
+  
+
+
+};

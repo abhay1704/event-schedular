@@ -18,6 +18,8 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: relative;
   z-index: 2001;
+  inset: unset !important;
+  height: -webkit-fill-available;
 }
 
 /* Heading */
@@ -48,7 +50,9 @@
 
 /* Input and Textarea Styles */
 .ReactModal__Content input,
-.ReactModal__Content textarea {
+.ReactModal__Content textarea,
+.ReactModal__Content select,
+.ReactModal__Content option {
   font-size: 1rem;
   padding: 10px;
   border: 1px solid var(--md-sys-color-outline, #ccc);
@@ -60,6 +64,11 @@
 .ReactModal__Content textarea {
   resize: vertical;
   min-height: 80px;
+}
+
+.ReactModal__Content .btn-group {
+  display: inline-flex;
+  gap: 1rem;
 }
 
 /* Button Styles */
@@ -74,6 +83,7 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
   margin-top: 15px;
+  width: 100%;
 }
 
 .ReactModal__Content button:hover {
@@ -96,7 +106,9 @@
   }
 
   .ReactModal__Content input,
-  .ReactModal__Content textarea {
+  .ReactModal__Content textarea,
+  .ReactModal__Content select,
+  .ReactModal__Content option {
     font-size: 0.9rem;
     padding: 8px;
   }
