@@ -30,7 +30,6 @@ const EventDetail = () => {
   };
 
   const handleEdit = () => {
-    console.log(user);
     if (!user.success) {
       setNotification(
         {
@@ -51,6 +50,7 @@ const EventDetail = () => {
 
   const handleUpdateEvent = async () => {
     const ref = event.ref;
+    setLoading(true);
     const status = await updateEvent(ref, {
       ...newEvent,
       start_time: new Date(newEvent.start_time),
@@ -68,6 +68,7 @@ const EventDetail = () => {
       });
     }
     setModalIsOpen(false);
+    setLoading(false);
   };
 
   const handleDeleteEvent = () => {
@@ -114,7 +115,6 @@ const EventDetail = () => {
 
       const docRef = doc(db, "events-xx1", id);
       unsubscribe = onSnapshot(docRef, (snapshot) => {
-        console.log("update", snapshot.exists());
         if (snapshot.exists() && snapshot.data()) {
           const currEvent = snapshot.data();
           currEvent.ref = id;
@@ -127,7 +127,6 @@ const EventDetail = () => {
           setLoading(false); // Stop loading after fetching
         }
       });
-      console.log("Document data: ", event);
     } catch (error) {
       console.error("Error fetching event details:", error);
       setLoading(false); // Stop loading after fetching

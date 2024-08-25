@@ -59,8 +59,10 @@ const FrontPage = ({ className }) => {
             <p className="msg">Please Sign in to view your tasks</p>
           </div>
         ) : (
-          <div className="front-page__left">
-            <Presentation tasks={tasks} />
+            
+            <div className="front-page__left">
+              
+            {tasks && tasks.length > 0 && <Presentation tasks={tasks} />}
             <div className="tasks">
               <div className="tasks__listing">
                 <h2>Tasks</h2>

@@ -29,7 +29,6 @@ const createUserDocument = async ({ uid, email, name }) => {
         name: name || email.split("@")[0] || "",
         events: [],
       });
-
     } else {
       console.log("User document already exists.");
     }
@@ -63,7 +62,6 @@ export class Event {
 
   async save() {
     try {
-  
       const docRef = await addDoc(collection(db, "events-xx1"), this.docDetail);
 
       const userRef = doc(db, "user-xx1", this.docDetail.uid);
@@ -159,20 +157,21 @@ export const getUserEvents = async (user, ensure = true) => {
   const events = [];
 
   try {
-    for (const eventRef of eventsArray) {
-      const eventSnap = await getDoc(eventRef);
-      if (eventSnap.exists()) {
-        const event = eventSnap.data();
-        event.ref = eventSnap.id;
-        event.start_time = event.start_time.toDate();
-        event.end_time = event.end_time.toDate();
-        events.push(event);
-      } else {
-        await updateDoc(userRef, {
-          events: arrayRemove(eventRef),
-        });
-      }
+    // Fetch all the events' data
+    const eventDataPromises = eventsArray.map((eventRef) => getDoc(eventRef));
+    const eventDocs = await Promise.all(eventDataPromises);
+
+    // Extract the event data from the document snapshots
+    const eventsData = eventDocs.map((eventDoc) => eventDoc.data());
+
+    for (let i = 0; i < eventsData.length; i++) {
+      const event = eventsData[i];
+      event.ref = eventsArray[i].id;
+      event.start_time = event.start_time.toDate();
+      event.end_time = event.end_time.toDate();
+      events.push(event);
     }
+
     return events;
   } catch (error) {
     console.error("Error retrieving user events: ", error);
